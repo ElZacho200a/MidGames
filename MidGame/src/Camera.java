@@ -7,13 +7,15 @@ import java.awt.event.KeyListener;
 import javax.swing.JPanel;
 import javax.swing.Timer;
 
-public class Camera extends JPanel implements KeyListener{
+public final class Camera extends JPanel implements KeyListener{
 	Player player ;
+	int xScene  = 0 ,yScene = 0 ;
 	
-	public Camera() {
+	public  Camera() {
 		this.setVisible(true);
 		player = new Player( new SpriteImages(100, 100, "Images\\MarioSprite.png"));
 		this.repaint();
+		System.out.println(Level.currentLevel.CollisionMap.getType());
 		Timer timer = new Timer(16, new ActionListener() {
 			
 			@Override
@@ -38,8 +40,19 @@ public class Camera extends JPanel implements KeyListener{
 		// TODO Auto-generated method stub
 		super.paintComponent(g);
 		
+		
+		
+		g.drawImage(Level.currentLevel.getBackground() , 0,0, null);
+		if((player.getPos()[0] -xScene > 800 && player.getSensX() == 1 )||player.getPos()[0] - xScene < 200 &&player.getSensX() == -1)
+			xScene += player.getSpeedX()  ; // Décalage ou non du cadre / champs de la caméra
+		
+			g.translate(-xScene, 0);
+		
+		
+		Level.currentLevel.Front(g);
+		//g.fillRect(player.getPos()[0] +player.hitbox.x,player.getPos()[1]+player.hitbox.y, player.hitbox.width, player.hitbox.height);
+		//Affiche la hitbox
 		g.drawImage(player.getCurrentImage(), player.getPos()[0], player.getPos()[1], null);
-		g.translate(player.getPos()[0], 0);
 		
 		
 		
@@ -75,7 +88,7 @@ public class Camera extends JPanel implements KeyListener{
 		switch (e.getKeyCode()){
 		case KeyEvent.VK_LEFT: {
 			player.accelerateX(-1);
-			System.out.println("TEST");
+			
 			break;
 		}
 		case KeyEvent.VK_RIGHT: {
