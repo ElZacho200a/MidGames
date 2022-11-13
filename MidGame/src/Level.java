@@ -3,6 +3,7 @@ import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Iterator;
 
 import javax.imageio.ImageIO;
@@ -12,7 +13,7 @@ public final class Level {
 	public static  Level currentLevel;
 	int ID = 0;
 	BufferedImage CollisionMap , Background;
-
+	ArrayList<Sprite> Ennemies; 
 
 
 	
@@ -23,7 +24,7 @@ public final class Level {
 	
 	public Level(String COl , String Back , int nmb) {
 		
-		
+		Ennemies = new ArrayList<>();
 		try {
 			Background = ImageIO.read(new File(Back));
 			CollisionMap = ImageIO.read(new File(COl));
@@ -38,12 +39,17 @@ public final class Level {
 		CollisionMatrice = new int [CollisionMap.getWidth()][CollisionMap.getHeight()];	
 		for (int i = 0; i < CollisionMatrice.length; i++) {
 			for (int j = 0; j < CollisionMatrice[0].length; j++) {
-				CollisionMatrice[i][j] = CollisionMap.getRGB(i, j);
 				
-				if(CollisionMatrice[i][j]  == -16777216) {
+				
+				if(CollisionMap.getRGB(i, j) == -256) {
+					CollisionMatrice[i][j] = -1;
+					Ennemies.add(new Goomba(i*50, j*50));
+				}else {
+					CollisionMatrice[i][j] = CollisionMap.getRGB(i, j);
+				}
 				
 			
-				}
+				
 				
 			}
 			
@@ -72,5 +78,11 @@ public final class Level {
 		}
 	}
 	
-
+	public void ShowEnnemies(Graphics g) {
+		for (Sprite ennemi : Ennemies) {
+			g.drawImage(ennemi.getCurrentImage(),ennemi.getPos()[0] , ennemi.getPos()[1],null);
+		}
+	}
+	
+	
 }

@@ -26,7 +26,7 @@ public class Sprite {
 
 	boolean isMooving ;
 	
-	public static double MAX_SPEED  = 8, GRAVITY_ACC = 1;
+	public  double MAX_SPEED  = 0, GRAVITY_ACC = 1;
 	
 	public Sprite(SpriteImages anime , int x , int y) {
 		pos =new int [] { x ,  y}; 
@@ -36,42 +36,12 @@ public class Sprite {
 			System.out.print("AAAAAAAAAAAAA");
 		}
 		this.hitbox = getHitbox(currentImage);
+		System.out.println(hitbox);
 		hitboxXUnchanged = hitbox.x;
 		isMooving = true;
 		
 	
-		Timer timer = new Timer(FPS, new ActionListener() {
-			
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				// TODO Auto-generated method stub
-				
-				
-				if (!CollisonY())
-					if (vitesse[1] >0)
-						currentImage = Animation.getImageByNumber(8); // Saut En Monté
-					else
-						currentImage = Animation.getImageByNumber(9); // Chute
-				else
-					if (vitesse[0] * vitesse[0] < 1)
-						currentImage = Animation.getImageByNumber(4); // à l'arret
-				
-					else
-						if(Animation.currentImageGiven != 1)// alternance entre les images (animation )
-							currentImage = Animation.getImageByNumber(1); //animation de marche 
-						else
-							currentImage = Animation.getImageByNumber(4);//animation de marche
-				if (sensX == 1){
-					flip();
-				}
-				
-				
-				updatePos();
-			}
-		});
-		
-		
-		timer.start();;
+	
 	}
 	
 	
@@ -229,7 +199,7 @@ if(Level.currentLevel.CollisionMatrice[(i  + pos[0] +hitbox.x+ (int)vitesse[0] /
 		
 		
 		if(sensX == 1)
-		hitbox.x = hitboxXUnchanged +(hitboxXUnchanged + hitbox.width - currentImage.getWidth()/2) ;
+		hitbox.x = currentImage.getWidth() - hitboxXUnchanged - hitbox.width  ;
 		if(sensX == -1)
 		hitbox.x = hitboxXUnchanged;
 		

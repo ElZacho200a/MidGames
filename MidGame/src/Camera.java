@@ -40,7 +40,7 @@ public final class Camera extends JPanel implements KeyListener{
 		// TODO Auto-generated method stub
 		super.paintComponent(g);
 		
-		
+		//TODO Optimisation !!!!
 		
 		g.drawImage(Level.currentLevel.getBackground() , 0,0, null);
 		if((player.getPos()[0] -xScene > 800 && player.getSensX() == 1 )||player.getPos()[0] - xScene < 200 &&player.getSensX() == -1)
@@ -48,9 +48,11 @@ public final class Camera extends JPanel implements KeyListener{
 		
 			g.translate(-xScene, 0);
 		
-		
+		Level.currentLevel.ShowEnnemies(g);
 		Level.currentLevel.Front(g);
+		
 		//g.fillRect(player.getPos()[0] +player.hitbox.x,player.getPos()[1]+player.hitbox.y, player.hitbox.width, player.hitbox.height);
+		//g.fillRect(Level.currentLevel.Ennemies.get(0).getPos()[0] +Level.currentLevel.Ennemies.get(0).hitbox.x,Level.currentLevel.Ennemies.get(0).getPos()[1]+Level.currentLevel.Ennemies.get(0).hitbox.y, Level.currentLevel.Ennemies.get(0).hitbox.width, Level.currentLevel.Ennemies.get(0).hitbox.height);
 		//Affiche la hitbox
 		g.drawImage(player.getCurrentImage(), player.getPos()[0], player.getPos()[1], null);
 		
