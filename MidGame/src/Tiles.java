@@ -5,9 +5,9 @@ import java.io.IOException;
 
 import javax.imageio.ImageIO;
 
-public class Tiles {
+public final class Tiles {
 	
-	public static BufferedImage Brick,Pipe,Surprise,Flag, Castle, PipeBody;
+	public  static BufferedImage Brick,Pipe,Surprise,Flag, Castle, PipeBody;
 	
 	public Tiles() throws IOException {
 		
@@ -28,7 +28,7 @@ public class Tiles {
 		 * purple(255,0,255) = -65281
 		 * white = -1
 		 * */
-		public static BufferedImage getTileByColor(int color) {
+		public final static BufferedImage getTileByColor(int color) {
 			
 			switch (color) {
 			case -16777216: {//black

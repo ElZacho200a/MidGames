@@ -6,7 +6,7 @@ import java.io.File;
 import javax.imageio.ImageIO;
 import javax.swing.Timer;
 
-public class Goomba  extends Sprite{
+public final class Goomba  extends Sprite{
 
 	
 	
@@ -17,11 +17,11 @@ public class Goomba  extends Sprite{
 	
 		sensX = -1;
 		
-		MAX_SPEED  = 2;
-		GRAVITY_ACC = 1;
+		MAX_SPEED  = 3;
+		GRAVITY_ACC = 2;
 		acceleration[0] =   sensX *MAX_SPEED;
 		
-		Timer timer = new Timer(16, new ActionListener() {
+		 timer = new Timer(50, new ActionListener() {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {

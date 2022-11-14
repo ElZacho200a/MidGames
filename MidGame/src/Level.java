@@ -1,5 +1,6 @@
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Point;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -14,7 +15,7 @@ public final class Level {
 	int ID = 0;
 	BufferedImage CollisionMap , Background;
 	ArrayList<Sprite> Ennemies; 
-
+	Point startPoint ;
 
 	
 
@@ -24,6 +25,7 @@ public final class Level {
 	
 	public Level(String COl , String Back , int nmb) {
 		
+				
 		Ennemies = new ArrayList<>();
 		try {
 			Background = ImageIO.read(new File(Back));
@@ -41,10 +43,13 @@ public final class Level {
 			for (int j = 0; j < CollisionMatrice[0].length; j++) {
 				
 				
-				if(CollisionMap.getRGB(i, j) == -256) {
+				if(CollisionMap.getRGB(i, j) == -256) { // red
 					CollisionMatrice[i][j] = -1;
 					Ennemies.add(new Goomba(i*50, j*50));
-				}else {
+				}else if(CollisionMap.getRGB(i, j) == -65281){ // purple
+					startPoint = new Point(i *50  , j * 50 );
+				}
+				else {
 					CollisionMatrice[i][j] = CollisionMap.getRGB(i, j);
 				}
 				
@@ -60,27 +65,37 @@ public final class Level {
 	}
 	
 	
-	public BufferedImage getBackground() {
+	public  final BufferedImage getBackground() {
 		return Background;
 	}
 	
-	public void Front(Graphics g) {
-		for (int i = 0; i < CollisionMatrice.length; i++) {
-			for (int j = 0; j < CollisionMatrice[0].length; j++) {
-				
-				
-				if(CollisionMatrice[i][j]  != -1) {
-				
-				g.drawImage(Tiles.getTileByColor(CollisionMatrice[i][j]),i * 50, j *50, null);
-				}
-				
+	public void Front(Graphics g , int Xdecal) {
+	int SizeX = 1050 + Xdecal , SizeY = 1000;
+	SizeX /= 50;
+	SizeY /= 50;
+	for (int i = Xdecal /50 ; i < SizeX; i++) {
+		for (int j = 0; j < SizeY; j++) {
+			try {
+				g.drawImage(Tiles.getTileByColor(CollisionMatrice[i][j]), (i - Xdecal /50) * 50 - Xdecal %50,j *50, null);
+			} catch (Exception e) {
+				// TODO: handle exception
 			}
+			
+			
+			
 		}
 	}
+	}
 	
-	public void ShowEnnemies(Graphics g) {
+	public void ShowEnnemies(Graphics g , int Xdecal) {
 		for (Sprite ennemi : Ennemies) {
-			g.drawImage(ennemi.getCurrentImage(),ennemi.getPos()[0] , ennemi.getPos()[1],null);
+			if(ennemi.getPos()[0] > Xdecal && ennemi.getPos()[0] < 1000+Xdecal ) {
+				ennemi.timer.start();
+				g.drawImage(ennemi.getCurrentImage(),ennemi.getPos()[0] , ennemi.getPos()[1],null);
+			
+			}else {
+				ennemi.timer.stop();
+			}
 		}
 	}
 	
