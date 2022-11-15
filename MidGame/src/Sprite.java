@@ -111,8 +111,9 @@ public class Sprite {
 	// Collison Function and stuff related to it
 	
 	
-	public boolean CollisonY() {
-	for (int i = 0; i < hitbox.width; i+=10) {
+	public boolean CollisonY()  {
+	try {
+		for (int i = 0; i < hitbox.width; i+=10) {
 			if(vitesse[1] >=0 ) {
 				if(Level.currentLevel.CollisionMatrice[(i  + pos[0] +hitbox.x+ (int)vitesse[0] /2)/50][(hitbox.height+1+ pos[1]+hitbox.y + (int)vitesse[1]/2) /50] < -1) {
 					
@@ -126,7 +127,11 @@ if(Level.currentLevel.CollisionMatrice[(i  + pos[0] +hitbox.x+ (int)vitesse[0] /
 				}	
 			}
 		}
-		return false;
+		return false;}catch (Exception e) {
+			this.doDeath();
+			return false;
+		}
+	
 	}
 	
 	
@@ -142,6 +147,8 @@ if(Level.currentLevel.CollisionMatrice[(i  + pos[0] +hitbox.x+ (int)vitesse[0] /
 	}
 	
 	public boolean CollisonX() {
+		try {
+			
 		
 		for (int i = 0; i < hitbox.height; i+=10) {
 			if (sensX == 1) {
@@ -153,10 +160,16 @@ if(Level.currentLevel.CollisionMatrice[(i  + pos[0] +hitbox.x+ (int)vitesse[0] /
 			if(Level.currentLevel.CollisionMatrice[(pos[0] +hitbox.x  + (int)vitesse[0] /2)/50][(i+ pos[1] +hitbox.y+ (int)vitesse[1]/2) /50] < -1) {
 				return true;
 			}}
+			
 	}
 		
 	
 		return false;
+		}catch (Exception e) {
+			
+			this.doDeath();
+			return true;
+		}
 	}
 	
 	
@@ -237,13 +250,13 @@ if(Level.currentLevel.CollisionMatrice[(i  + pos[0] +hitbox.x+ (int)vitesse[0] /
 		
 		
 		}else
-		{
+		
 			//getOnGround();
 			vitesse[1] = 0;
 			
-		}
-	
 		
+	
+	
 		
 	}
 	

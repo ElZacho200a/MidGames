@@ -15,7 +15,7 @@ public final class Camera extends JPanel implements KeyListener{
 	public  Camera() {
 		player = new Player( new SpriteImages(100, 100, "Images\\MarioSprite.png"));
 		this.repaint();
-		System.out.println(Level.currentLevel.CollisionMap.getType());
+		
 		Timer timer = new Timer(4, new ActionListener() {
 			
 			@Override

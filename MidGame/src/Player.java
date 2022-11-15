@@ -82,7 +82,7 @@ public final class Player extends Sprite {
 	public void resetAll() {
 		vitesse[0] = 0;
 		vitesse[1] = 0;
-		System.out.println(Level.currentLevel.startPoint.x);
+		
 		pos[0] = Level.currentLevel.startPoint.x;
 		pos[1] = Level.currentLevel.startPoint.y;
 		
@@ -99,10 +99,10 @@ public final class Player extends Sprite {
 			int x = ennemi.getPos()[0] + ennemi.hitbox.x ,y  = ennemi.getPos()[1] + ennemi.hitbox.y ;
 			
 			if(y < nextYPos && nextYPos - (int)vitesse[1] < y) {
-				System.out.println("Almost");
+				
 				if(x < pos[0] + hitbox.x + hitbox.width && pos[0] +hitbox.x   < x + ennemi.hitbox.width) {
 					toRemove[i] = 1;
-					System.out.println("BOOOM HEADSHOT");
+					
 					kill = true;
 				}
 		}
@@ -133,7 +133,7 @@ public final class Player extends Sprite {
 	
 	
 	public void checkEnnemi() {
-		System.out.println();
+		
 		for(Sprite ennemi :Level.currentLevel.Ennemies) {
 			if(ennemi.isDead)
 				continue;

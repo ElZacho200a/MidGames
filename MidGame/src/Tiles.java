@@ -7,7 +7,8 @@ import javax.imageio.ImageIO;
 
 public final class Tiles {
 	
-	public  static BufferedImage Brick,Pipe,Surprise,Flag, Castle, PipeBody;
+	public  static BufferedImage Brick,Pipe,Surprise, Castle, PipeBody,Ground;
+	public static  SpriteImages Flag;
 	
 	public Tiles() throws IOException {
 		
@@ -16,7 +17,8 @@ public final class Tiles {
 			Castle = ImageIO.read(new File("Images\\Castle.png"));
 			Pipe = ImageIO.read(new File("Images\\PipeEnd.png"));
 			PipeBody = ImageIO.read(new File("Images\\PipeBody.png"));
-			
+			Ground = ImageIO.read(new File("Images\\Ground.png"));
+			Flag = new SpriteImages(100, 50, "Images\\Flag.png");
 			}
 		
 		/*blue(0,0,255) = -16776961
@@ -31,10 +33,17 @@ public final class Tiles {
 		public final static BufferedImage getTileByColor(int color) {
 			
 			switch (color) {
+			
+			case -16711916:{
+				return Flag.getImageByNumber(2);
+			}case -16711896:{
+				return Flag.getImageByNumber(1);
+			}case -16711876:{
+				return Flag.getImageByNumber(0);
+			}
 			case -16777216: {//black
 				return Brick ;
-					
-					
+	
 			}
 			case-65536:{ // red
 				return Castle;
@@ -45,7 +54,11 @@ public final class Tiles {
 			case-16711681:{
 				return PipeBody;
 			}
+			case-8441088:{ // brown
+				return Ground;
+			}
 			default:
+				System.out.println(color);
 				throw new IllegalArgumentException("Unexpected value: " + color);
 			}
 		
