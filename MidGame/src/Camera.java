@@ -4,15 +4,15 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.Timer;
 
 public final class Camera extends JPanel implements KeyListener{
 	Player player ;
-	int xScene  = 0 ,yScene = 0 ;
+	static int xScene  = 0 ,yScene = 0 ;
 	
 	public  Camera() {
-		this.setVisible(true);
 		player = new Player( new SpriteImages(100, 100, "Images\\MarioSprite.png"));
 		this.repaint();
 		System.out.println(Level.currentLevel.CollisionMap.getType());
@@ -40,10 +40,10 @@ public final class Camera extends JPanel implements KeyListener{
 		// TODO Auto-generated method stub
 		super.paintComponent(g);
 		
-		//TODO Optimisation !!!!
+		
 		
 		g.drawImage(Level.currentLevel.getBackground() , 0,0, null);
-		if((player.getPos()[0] -xScene > 800 && player.getSensX() == 1 )||player.getPos()[0] - xScene < 200 &&player.getSensX() == -1)
+		if((player.getPos()[0] -xScene > 700 && player.getSensX() == 1 )||player.getPos()[0] - xScene < 300 &&player.getSensX() == -1)
 			xScene += player.getSpeedX() /2 ; // Décalage ou non du cadre / champs de la caméra
 		Level.currentLevel.Front(g , xScene);
 			g.translate(-xScene, 0);

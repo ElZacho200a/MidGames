@@ -25,8 +25,8 @@ public class Sprite {
 	Timer timer;
 	
 	int framePass = 0;
-
-	boolean isMooving ;
+	int waiting = 0;
+	boolean isMooving ,isDead  = false;
 	
 	public  double MAX_SPEED  = 0, GRAVITY_ACC = 1;
 	

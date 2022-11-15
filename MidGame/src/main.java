@@ -1,6 +1,7 @@
 import java.io.IOException;
 
 import javax.swing.JFrame;
+import javax.swing.JPanel;
 
 public class main {
 
@@ -13,8 +14,10 @@ public class main {
 		JFrame frame = new JFrame();
 		frame.setDefaultCloseOperation(frame.EXIT_ON_CLOSE);
 		frame.setVisible(true);
+		frame.setLayout(null);
 		frame.add(camera);
-		frame.setSize(1000,1000);
+		camera.setBounds(0, 0, 1000, 1050);
+		frame.setSize(1000,1050);
 		frame.setResizable(false);
 		frame.addKeyListener(camera);
 		

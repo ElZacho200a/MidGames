@@ -100,4 +100,13 @@ public final class Level {
 	}
 	
 	
+	public void reProcessEnnemies() {
+		Ennemies = new ArrayList<>();
+		for (int i = 0; i < CollisionMatrice.length; i++) 
+			for (int j = 0; j < CollisionMatrice[0].length; j++) 
+				if(CollisionMap.getRGB(i,j) == -256)
+					Ennemies.add(new Goomba(i * 50, j * 50));
+	}
+	
+	
 }

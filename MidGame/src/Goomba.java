@@ -27,7 +27,7 @@ public final class Goomba  extends Sprite{
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
 				
-				
+				if(!isDead) {
 					framePass  = (framePass +1) %10;
 					if (framePass  == 0)
 						if(Animation.currentImageGiven != 1)// alternance entre les images (animation )
@@ -42,12 +42,38 @@ public final class Goomba  extends Sprite{
 					sensX *= -1;
 					acceleration[0] *= -1;
 				}
+				}else {
+					framePass++;
+					if(framePass > 10)
+						timer.stop();
+					
+					
+				}
+				
+				
+				
+				
 			}
 		});
 		
 		
 		timer.start();;
 		
+	}
+	
+	
+	@Override
+	public void doDeath()  {
+		isDead = true;
+		currentImage = Animation.getImageByNumber(2);
+	
+		
+	}
+	
+	
+	
+	public void wait(int millis) {
+		waiting = millis;
 	}
 
 }
