@@ -1,13 +1,7 @@
-import java.awt.Color;
+
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.geom.AffineTransform;
-import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
-import java.util.Iterator;
-import java.util.Vector;
 
 import javax.swing.Timer;
 
@@ -15,7 +9,7 @@ public class Sprite {
 	int[] pos; // Position in x and y , 0  and 1
 	BufferedImage currentImage ;
 	
-
+	boolean sensBool = false;
 	SpriteImages Animation;
 	double[] acceleration  = new double[2], vitesse = new double[2] ;  // Sprite vectors
 	Rectangle hitbox ;
@@ -40,6 +34,7 @@ public class Sprite {
 		this.hitbox = getHitbox(currentImage);
 		System.out.println(hitbox);
 		hitboxXUnchanged = hitbox.x;
+		
 		isMooving = true;
 		
 	
@@ -50,7 +45,7 @@ public class Sprite {
 	
 	
 	
-	public Rectangle getHitbox(BufferedImage img) {// getting a realistic framing from the given picture
+	public  static Rectangle getHitbox(BufferedImage img) {// getting a realistic framing from the given picture
 		int w =0 , h =0 , acc =0;
 		int x = 0 ,y = 0;
 		boolean asBegin = false , asEnded = false, isEmpty = true;
@@ -102,6 +97,7 @@ public class Sprite {
 		acceleration[0] = ((double)sens) * MAX_SPEED;
 		if(sens != 0 && sens != sensX) {
 			flip();
+			sensBool = !sensBool;
 			sensX = sens;
 		}
 	}
@@ -207,20 +203,23 @@ if(Level.currentLevel.CollisionMatrice[(i  + pos[0] +hitbox.x+ (int)vitesse[0] /
 		if(vitesse[0] * vitesse[0] < 1)
 			vitesse[0] = 0;
 		
-		
+		// Modification de la hitbox en fonction du sens 
 		if(sensX == 1)
 		hitbox.x = currentImage.getWidth() - hitboxXUnchanged - hitbox.width  ;
 		if(sensX == -1)
 		hitbox.x = hitboxXUnchanged;
+		// end
 		
-		
+		if(vitesse[1] == 0)
 		vitesse[0] = (acceleration[0] * 2 + vitesse[0]) / 2 ;
-		
+		else
+			if(vitesse[0] * sensX  < MAX_SPEED/2 )
+			 vitesse[0] = acceleration[0] + vitesse[0]  ;
 		
 		
 		// Y 
 		//speed changing
-		acceleration[1] = GRAVITY_ACC; // Gravité si non collision
+		
 		//POS changing
 		
 		
@@ -241,23 +240,14 @@ if(Level.currentLevel.CollisionMatrice[(i  + pos[0] +hitbox.x+ (int)vitesse[0] /
 		
 		if(!CollisonY()) {
 			
-			vitesse[1]  += acceleration[1];	
-			
+			vitesse[1]  += acceleration[1];				
 			pos[1] += vitesse[1]/2;
-			
-			
-		
-		
-		
+			acceleration[1] = GRAVITY_ACC; // Gravité si non collision
+
 		}else
 		
 			//getOnGround();
 			vitesse[1] = 0;
-			
-		
-	
-	
-		
 	}
 	
 	
@@ -265,7 +255,7 @@ if(Level.currentLevel.CollisionMatrice[(i  + pos[0] +hitbox.x+ (int)vitesse[0] /
 		if(!isOnTheGround() &&  followRule)
 			return;
 		acceleration[1] = 0;
-		vitesse[1] = -4*MAX_SPEED;
+		vitesse[1] = -3*MAX_SPEED;
 	}
 	
 	

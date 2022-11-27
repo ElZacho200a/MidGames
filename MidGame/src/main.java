@@ -1,7 +1,6 @@
 import java.io.IOException;
 
 import javax.swing.JFrame;
-import javax.swing.JPanel;
 
 public class main {
 
@@ -12,6 +11,8 @@ public class main {
 		new Level("Images\\LEVEL_0.png", "Images\\BackGround_0.png", 0);
 		Camera camera = new Camera();
 		JFrame frame = new JFrame();
+		
+		
 		frame.setDefaultCloseOperation(frame.EXIT_ON_CLOSE);
 		frame.setVisible(true);
 		frame.setLayout(null);

@@ -4,12 +4,11 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
-import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.Timer;
 
 public final class Camera extends JPanel implements KeyListener{
-	Player player ;
+	 static Player player ;
 	static int xScene  = 0 ,yScene = 0 ;
 	
 	public  Camera() {
@@ -41,9 +40,10 @@ public final class Camera extends JPanel implements KeyListener{
 		super.paintComponent(g);
 		
 		
-		
-		g.drawImage(Level.currentLevel.getBackground() , 0,0, null);
-		if((player.getPos()[0] -xScene > 700 && player.getSensX() == 1 )||player.getPos()[0] - xScene < 300 &&player.getSensX() == -1)
+		//g.clearRect(0, 0, this.getWidth(), this.getHeight());
+		g.drawImage(Level.currentLevel.getBackground() , -xScene/10 % 1000,0, null);
+		g.drawImage(Level.currentLevel.getBackground() , -xScene/10 % 1000 + 1000,0, null);
+		if((player.getPos()[0] -xScene > 500 && player.getSensX() == 1 )||player.getPos()[0] - xScene < 00 &&player.getSensX() == -1)
 			xScene += player.getSpeedX() /2 ; // Décalage ou non du cadre / champs de la caméra
 		Level.currentLevel.Front(g , xScene);
 			g.translate(-xScene, 0);
@@ -99,6 +99,14 @@ public final class Camera extends JPanel implements KeyListener{
 		}
 		case KeyEvent.VK_SPACE: {
 			player.jump(true);;
+			break;
+		}
+		case KeyEvent.VK_DOWN :{
+			if(Tiles.isTopPipe(Level.currentLevel.CollisionMatrice[player.getcollisonPos(0) / 50][(player.getcollisonPos(1) + player.hitbox.height +1) / 50]))
+				if(!Level.currentLevel.isSubLevel())
+					new SubLevel("Images\\Sublevel_0.png", "Images\\Background_1.png", 0, Level.currentLevel, xScene);
+				else
+					Level.currentLevel.nextLevel();
 			break;
 		}
 		default:

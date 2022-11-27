@@ -1,31 +1,26 @@
+
 import java.awt.Graphics;
-import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Iterator;
 
 import javax.imageio.ImageIO;
 
-public final class Level {
+public class Level {
 	
 	public static  Level currentLevel;
 	int ID = 0;
 	BufferedImage CollisionMap , Background;
 	ArrayList<Sprite> Ennemies; 
 	Point startPoint ;
-
-	
-
-
+	ArrayList<Sprite> EndFlag;
+	ArrayList<SubLevel> SubLevel;
 	int[][] CollisionMatrice;
-	
-	
-	public Level(String COl , String Back , int nmb) {
 		
-				
+	public Level(String COl , String Back , int nmb) {
+		EndFlag = new ArrayList<>();
 		Ennemies = new ArrayList<>();
 		try {
 			Background = ImageIO.read(new File(Back));
@@ -35,32 +30,12 @@ public final class Level {
 			e.printStackTrace();
 		}
 		ID = nmb;
-		
-		System.out.println(CollisionMap.getRGB(0, 0));
-		
 		CollisionMatrice = new int [CollisionMap.getWidth()][CollisionMap.getHeight()];	
 		for (int i = 0; i < CollisionMatrice.length; i++) {
 			for (int j = 0; j < CollisionMatrice[0].length; j++) {
-				
-				
-				if(CollisionMap.getRGB(i, j) == -256) { // red
-					CollisionMatrice[i][j] = -1;
-					Ennemies.add(new Goomba(i*50, j*50));
-				}else if(CollisionMap.getRGB(i, j) == -65281){ // purple
-					startPoint = new Point(i *50  , j * 50 );
-				}
-				else {
-					CollisionMatrice[i][j] = CollisionMap.getRGB(i, j);
-				}
-				
-			
-				
-				
+				Construct(i,j);
 			}
-			
-		}
-	
-		
+		}		
 		currentLevel = this;
 	}
 	
@@ -86,6 +61,41 @@ public final class Level {
 		}
 	}
 	}
+	
+	
+	private void Construct(int i,int j) {
+		
+		int color = CollisionMap.getRGB(i, j);
+		if(Tiles.isEnnemy(color)) {
+			CollisionMatrice[i][j] = -1;
+			Ennemies.add(new Goomba(i*50, j*50));
+		}else if(CollisionMap.getRGB(i, j) == -65281){ // purple
+			startPoint = new Point(i *50  , j * 50 );
+		}
+		else {
+			if(Tiles.isNotCollide( CollisionMap.getRGB(i, j))) {
+				CollisionMatrice[i][j] = CollisionMap.getRGB(i, j) * -1;
+				if(Tiles.isFlag(CollisionMap.getRGB(i, j)))
+						EndFlag.add(new Sprite(new SpriteImages(50, 50, "Images\\Flag.png"), i*50, j*50));
+				}
+			else
+				CollisionMatrice[i][j] = CollisionMap.getRGB(i, j);
+		}
+	}
+	
+	
+	public void nextLevel() {
+
+		
+		// Setting the next level
+		//
+		currentLevel = new Level(String.format("Images\\LEVEL_%d.png", ID +1),String.format("Images\\BackGround_%d.png" ,ID+1), ID +1);
+	}
+	
+	public Boolean isSubLevel() {
+		return false;
+	}
+	
 	
 	public void ShowEnnemies(Graphics g , int Xdecal) {
 		for (Sprite ennemi : Ennemies) {

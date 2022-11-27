@@ -1,6 +1,5 @@
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.Iterator;
 
 import javax.swing.Timer;
 
@@ -8,40 +7,56 @@ public final class Player extends Sprite {
 	
 	
 	int Life = 5;
-
+	Boolean flipped = false;
 	public  Player(SpriteImages anime) {
 	
 	super(anime ,Level.currentLevel.startPoint.x ,Level.currentLevel.startPoint.y);
-	MAX_SPEED  = 12;
-	GRAVITY_ACC = 3;
-	 timer = new Timer(8, new ActionListener() {
+	MAX_SPEED  = 13;
+	GRAVITY_ACC = 2;
+	 
+	 timer = new Timer(16, new ActionListener() {
 		
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			// TODO Auto-generated method stub
 			
-			
+			if(checkFlag()) {
+				Level.currentLevel.nextLevel();
+				resetAll();
+			}
 					if(!isDead) {
 						Checkattack();
 			if (!CollisonY())
-				if (vitesse[1] >0)
+				if (vitesse[1] >0) {
 					currentImage = Animation.getImageByNumber(8); // Saut En Monté
-				else
+					flipped = false;
+				}
+					else {
 					currentImage = Animation.getImageByNumber(9); // Chute
-			else
-				if (vitesse[0] * vitesse[0] < 1)
-					currentImage = Animation.getImageByNumber(4); // à l'arret
-			
-				else
-					if(Animation.currentImageGiven != 1)// alternance entre les images (animation )
-						currentImage = Animation.getImageByNumber(1); //animation de marche 
+					flipped = false;
+					}
 					else
-						currentImage = Animation.getImageByNumber(4);//animation de marche
-			if (sensX == 1){
+				if (vitesse[0] * vitesse[0] < 1) {
+					currentImage = Animation.getImageByNumber(4); // à l'arret
+					flipped = false;
+				}
+				else
+					
+					if( framePass  == 0){// alternance entre les images (animation )
+						currentImage = Animation.getImageByNumber(1); //animation de marche 
+						flipped = false;
+					}else if(framePass == 6) {
+						currentImage = Animation.getImageByNumber(4);
+						flipped = false;
+					}
+							
+			
+			framePass = (framePass + 1) % 7;
+			
+			if (sensX == 1 && !flipped ) {
 				flip();
+				flipped = true;
 			}
-			
-			
 			updatePos();
 	
 			 checkEnnemi();
@@ -50,14 +65,13 @@ public final class Player extends Sprite {
 				 framePass ++;
 				 pos[1] --;;
 				 }else if(pos[1] < 1000){
-					 	 pos[1] +=2;
+					 	 pos[1] +=10;
 					 
 					 
 				 }else {
 					 isDead = false;
 					 Life --;
-					 Camera.xScene = 0;
-					 Level.currentLevel.reProcessEnnemies();
+					 
 					resetAll();
 				 }
 			 }
@@ -79,7 +93,19 @@ public final class Player extends Sprite {
 	
 	
 	
+	public boolean checkFlag() {
+		for (Sprite flag: Level.currentLevel.EndFlag) {
+			if(this.areSpriteInContact(this, flag))
+				return true;
+				
+		}
+		return false;
+		
+	}
+	
 	public void resetAll() {
+		Camera.xScene = 0;
+		Level.currentLevel.reProcessEnnemies();
 		vitesse[0] = 0;
 		vitesse[1] = 0;
 		
@@ -146,10 +172,10 @@ public final class Player extends Sprite {
 	public void doDeath() {
 		isDead = true;
 		pos[1] -= 50;
-		
 		currentImage = Animation.getImageByNumber(5);
-		
-		
+		}
+	public int getcollisonPos(int n) {
+		return pos[n] + (n == 0 ? hitbox.x : hitbox.y);
 	}
 	
 	
