@@ -55,6 +55,7 @@ public final class Tiles {
 		public final boolean isSpawnPoint(int color) {
 			return color == -65281 ;
 		}
+		
 	
 		public final static BufferedImage getTileByColor(int color) {
 			
